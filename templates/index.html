@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arecanut Disease Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0fff4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .form-container {
+      background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), 
+                        url('https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://images.pexels.com/photos/6913635/pexels-photo-6913635.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+      border-radius: 0.5rem;
+    }
+    .input-field:focus {
+      border-color: #48bb78;
+      box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
+    }
+    .page-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.pexels.com/photos/6913635/pexels-photo-6913635.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      z-index: -2;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-background"></div>
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="form-container w-full max-w-lg p-8 rounded-lg shadow-xl relative">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-green-700">Arecanut Disease Prediction</h1>
+        <p class="text-gray-600 mt-2">Enter plant features to predict potential diseases</p>
+      </div>
+      
+      <form method="POST" action="/predict" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="leaf_color" class="block text-sm font-medium text-gray-700 mb-1">Leaf Color</label>
+            <input type="text" id="leaf_color" name="leaf_color" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+          
+          <div>
+            <label for="spot_color" class="block text-sm font-medium text-gray-700 mb-1">Spot Color</label>
+            <input type="text" id="spot_color" name="spot_color" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+          
+          <div>
+            <label for="leaf_texture" class="block text-sm font-medium text-gray-700 mb-1">Leaf Texture</label>
+            <input type="text" id="leaf_texture" name="leaf_texture" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+          
+          <div>
+            <label for="stem_condition" class="block text-sm font-medium text-gray-700 mb-1">Stem Condition</label>
+            <input type="text" id="stem_condition" name="stem_condition" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+          
+          <div>
+            <label for="soil_type" class="block text-sm font-medium text-gray-700 mb-1">Soil Type</label>
+            <input type="text" id="soil_type" name="soil_type" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+          
+          <div>
+            <label for="moisture_level" class="block text-sm font-medium text-gray-700 mb-1">Moisture Level</label>
+            <input type="text" id="moisture_level" name="moisture_level" required 
+                  class="input-field w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none transition duration-150">
+          </div>
+        </div>
+        
+        <div class="flex justify-center mt-8">
+          <button type="submit" 
+                  class="px-6 py-3 bg-green-600 text-white font-medium rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150">
+            Predict Disease
+          </button>
+        </div>
+      </form>
+      
+      <div class="mt-6 text-center text-sm text-gray-500">
+        <p>Enter accurate plant characteristics for better prediction results</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

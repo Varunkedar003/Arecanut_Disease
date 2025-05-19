@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arecanut Disease Prediction Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #f0fff4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .result-container {
+      background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.9)), 
+                        url('https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .result-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://images.pexels.com/photos/6913635/pexels-photo-6913635.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+      border-radius: 0.5rem;
+    }
+    .page-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.pexels.com/photos/6913635/pexels-photo-6913635.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      z-index: -2;
+    }
+    .feature-card {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-left: 4px solid #48bb78;
+      transition: transform 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-background"></div>
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="result-container w-full max-w-4xl p-8 rounded-lg shadow-xl relative">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-green-700">Arecanut Disease Prediction Results</h1>
+        <p class="text-gray-600 mt-2">Analysis based on your plant features</p>
+      </div>
+      
+      <!-- Prediction Result -->
+      <div class="bg-white bg-opacity-90 rounded-lg p-6 mb-8 shadow-md">
+        <h2 class="text-2xl font-bold text-green-800 border-b border-green-200 pb-2 mb-4">Disease Predicted: <span class="text-yellow-600">{{ prediction }}</span></h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Confidence Analysis</h3>
+            <div class="chart-container">
+              {{ pie_chart|safe }}
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Disease Information</h3>
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+              {% if prediction == "Yellow Leaf Disease" %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">Yellow Leaf Disease</span> is a common condition affecting arecanut plants.</p>
+                <p class="text-sm text-gray-700 mb-2">It primarily affects the leaves, causing yellowing and eventual wilting if left untreated.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Apply fungicide and ensure proper drainage.</p>
+              {% elif prediction == "Koleroga Disease" %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">Koleroga Disease</span> (Fruit Rot) is a serious fungal disease affecting arecanut plants.</p>
+                <p class="text-sm text-gray-700 mb-2">It causes nuts to rot and fall prematurely, especially during monsoon season.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Apply 1% Bordeaux mixture and improve air circulation.</p>
+              {% elif prediction == "Bud Rot Disease" %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">Bud Rot Disease</span> affects the central growing point of arecanut palms.</p>
+                <p class="text-sm text-gray-700 mb-2">It causes rotting of the bud and eventual death of the palm if not treated early.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Remove infected tissues and apply copper oxychloride.</p>
+              {% elif prediction == "Stem Bleeding" %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">Stem Bleeding</span> is characterized by reddish-brown liquid oozing from cracks in the stem.</p>
+                <p class="text-sm text-gray-700 mb-2">It's caused by a fungal pathogen that affects the vascular system.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Clean affected areas and apply Tridemorph.</p>
+              {% elif prediction == "Healthy" %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">Healthy Plant</span> - No disease detected.</p>
+                <p class="text-sm text-gray-700 mb-2">Your arecanut plant appears to be in good health based on the provided features.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Continue regular maintenance and monitoring.</p>
+              {% else %}
+                <p class="text-sm text-gray-700 mb-2"><span class="font-medium">{{ prediction }}</span> has been identified in your arecanut plant.</p>
+                <p class="text-sm text-gray-700 mb-2">Consult with a local agricultural expert for specific treatment options.</p>
+                <p class="text-sm text-gray-700"><span class="font-medium">Recommended action:</span> Monitor the plant closely and isolate if necessary.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Feature Analysis -->
+      <div class="bg-white bg-opacity-90 rounded-lg p-6 shadow-md">
+        <h2 class="text-2xl font-bold text-green-800 border-b border-green-200 pb-2 mb-6">Feature Analysis</h2>
+        
+        <div class="mb-6">
+          <div class="chart-container">
+            {{ bar_chart|safe }}
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Leaf Color</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('leaf_color', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 85%"></div>
+            </div>
+          </div>
+          
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Spot Color</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('spot_color', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 78%"></div>
+            </div>
+          </div>
+          
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Leaf Texture</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('leaf_texture', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 65%"></div>
+            </div>
+          </div>
+          
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Stem Condition</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('stem_condition', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 45%"></div>
+            </div>
+          </div>
+          
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Soil Type</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('soil_type', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 70%"></div>
+            </div>
+          </div>
+          
+          <div class="feature-card p-4 rounded">
+            <h4 class="font-semibold text-green-700">Moisture Level</h4>
+            <p class="text-sm text-gray-600">{{ request.form.get('moisture_level', '') }}</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div class="bg-green-500 h-2.5 rounded-full" style="width: 80%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-center mt-8">
+        <a href="/" 
+           class="px-6 py-3 bg-green-600 text-white font-medium rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150">
+          Back to Prediction Form
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
